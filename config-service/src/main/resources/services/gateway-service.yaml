@@ -1,0 +1,36 @@
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000
+
+ribbon: #балансировщик нагрузки
+  ReadTimeout: 20000
+  ConnectTimeout: 20000
+
+zuul: #Сам gateway service
+  ignoredServices: '*'
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000
+
+  routes:
+    account-service:
+      path: /accounts/** #отправляет запрос в account service
+      serviceId: account-service
+      stripPrefix: false
+
+    bill-service:
+      path: /bills/**
+      serviceId: bill-service
+      stripPrefix: false
+
+    deposit-service:
+      path: /deposits/**
+      serviceId: deposit-service
+      stripPrefix: false
+
+server:
+  port: 8989
